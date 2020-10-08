@@ -14,62 +14,61 @@ public class Manager extends Account {
 		return order.getSubTotal();
 	}
 	
-	public Wrap addWrapItem() {
-		Wrap wrap = new Wrap();
-		// send notification to singleton system
-		return wrap;
+	public void addItem(String name, int price, String ingredients, String allergens, String nutrition, Category category) {
+		Item foodItem = new Item();
+		foodItem.name = name;
+		foodItem.price = price;
+		foodItem.ingredients = ingredients;
+		foodItem.allergens = allergens;
+		foodItem.nutrition = nutrition;
+		foodItem.category = category;
+		systemInstance.addItem(foodItem);
 	}
 	
-	public Salad addSaladItem() {
-		Salad salad = new Salad();
-		// send notification to singleton system
-		return salad;
+	public void deleteItem(Item item) {
+		systemInstance.deleteItem(item);
 	}
+
 	
-	public void setItemPrice(Item item, int price) {
+	public void updateItemPrice(Item item, int price) {
 		item.price = price;
-		// send notification to singleton system
+		systemInstance.sendNotification("Updated item price!");
 	}
 	
-	public void setItemIngredients(Item item, String ingredients) {
+	public void updateItemIngredients(Item item, String ingredients) {
 		item.ingredients = ingredients;
-		// send notification to singleton system
+		systemInstance.sendNotification("Updated item ingredients!");
 	}
 	
-	public void setItemAllergens(Item item, String allergens) {
+	public void updateItemAllergens(Item item, String allergens) {
 		item.allergens = allergens;
-		// send notification to singleton system
+		systemInstance.sendNotification("Updated item allergens!");
 	}
 	
-	public void setItemNutrition(Item item, String nutrition) {
+	public void updateItemNutrition(Item item, String nutrition) {
 		item.nutrition = nutrition;
-		// send notification to singleton system
+		systemInstance.sendNotification("Updated item nutrition!");
 	}
 	
-	public void setItemName(Item item, String name) {
+	public void updateItemName(Item item, String name) {
 		item.name = name;
-		// send notification to singleton system
+		systemInstance.sendNotification("Updated item name!");
 	}
 	
-	public void setItemSize(Item item, Size size) {
+	public void updateItemSize(Item item, Size size) {
 		item.size = size;
-		// send notification to singleton system
+		systemInstance.sendNotification("Updated item size!");
 	}
 	
-	public void setItemCategory(Item item, Category category) {
+	public void updateItemCategory(Item item, Category category) {
 		item.category = category;
-		// send notification to singleton system
+		systemInstance.sendNotification("Updated item category!");
 	}
 	
-	public void setItemDimensions(Item item, int dimensions) {
+	public void updateItemDimensions(Item item, int dimensions) {
 		item.dimensions = dimensions;
-		// send notification to singleton system
+		systemInstance.sendNotification("Updated item dimensions!");
 	}
-	
-//  I didnt create Food --> FoodItem. I just created Item, assuming there're unlimited amounts of food items	
-//	public void setItemQuantity(Item item, int quantity) {
-//		item.quantity = quantity;
-//	}
 	
 	
 }

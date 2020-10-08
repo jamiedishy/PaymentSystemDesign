@@ -4,7 +4,7 @@ public class Location {
 	private int addressNumber;
 	private String country;
 	private String city;
-	private String poscalCode;
+	private String postalCode;
 	public int getAddressNumber() {
 		return addressNumber;
 	}
@@ -24,9 +24,9 @@ public class Location {
 		this.city = city;
 	}
 	public String getPoscalCode() {
-		return poscalCode;
+		return postalCode;
 	}
 	public void setPoscalCode(String postalCode) {
-		this.poscalCode = poscalCode;
+		this.postalCode = postalCode;
 	}
 }

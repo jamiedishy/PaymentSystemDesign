@@ -19,7 +19,17 @@ public class Order {
 		}
 		return this.subTotal;
 	}
-	public void setSubTotal(int payment) {
+	
+	public void setSubTotal() {
+		this.subTotal = 0;
+		for(int i = 0; i < this.listOfItems.length; i++) {
+		    if(this.listOfItems[i] != null) {
+		    	this.subTotal += this.listOfItems[i].price;
+		    }
+		}
+	}
+	
+	public void paySubTotal(int payment) {
 		this.subTotal -= payment;
 	}
 
