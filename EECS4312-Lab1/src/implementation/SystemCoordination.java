@@ -4,10 +4,8 @@ import java.util.ArrayList;
 
 public class SystemCoordination {
 	private static SystemCoordination sSoleInstance;
-	// creates shoppers and managers
-	int uniqueIdNumber = 0; 
-	ArrayList<Manager> managerList = new ArrayList<Manager>(); 
-	ArrayList<Shopper> shopperList = new ArrayList<Shopper>(); 
+	int uniqueIdNumber = 0;  
+	ArrayList<Account> accountList = new ArrayList<Account>();
 	ArrayList<Order> orderList = new ArrayList<Order>(); 
 	ArrayList<Item> itemList = new ArrayList<Item>();
 	
@@ -39,11 +37,14 @@ public class SystemCoordination {
     }
     
     // create manager
-	public Manager createManagerObject() {
+	public Manager createManagerObject(String username, String password) {
 		Manager manager = new Manager();
+		manager.shopperOrManager = "M";
+		manager.setUsername(username);
+		manager.setPassword(password);
 		manager.setId(this.uniqueIdNumber);
 		this.uniqueIdNumber++;
-		managerList.add(manager);
+		accountList.add(manager);
 		return manager;
 	}
 	
@@ -55,11 +56,20 @@ public class SystemCoordination {
 		return order;
 	}
 	
+    public void deleteOrder(int orderID) {
+    	for (int i = 0; i < orderList.size(); i++) {
+    		if (orderList.get(i).ID == orderID) {
+    			orderList.remove(i);
+    		}
+    	}
+    	sendNotification("Order deleted");
+    }
+	
 	// delete manager
 	public void deleteManagerObject(Manager manager) {
-		for (int i = 0; i < managerList.size(); i++) {
-			if (managerList.get(i).getId() == manager.getId()) {
-				managerList.remove(i);
+		for (int i = 0; i < accountList.size(); i++) {
+			if (accountList.get(i).getId() == manager.getId()) {
+				accountList.remove(i);
 			}
 		}
 	}
@@ -68,10 +78,39 @@ public class SystemCoordination {
 		order.status = status;
 	}
 	
+	public ArrayList<Order> getShopperOrders(int shopperID) {
+		ArrayList<Order> shopperOrders = new ArrayList<Order>(); 
+		
+		for (int i = 0; i < orderList.size(); i++) {
+			if (orderList.get(i).associatedToShopperId == shopperID) {
+				shopperOrders.add(orderList.get(i));
+			}
+		}
+		return shopperOrders;
+	}
+	
 	public Notification sendNotification(String message) {
 		Notification notification = new Notification();
 		notification.content = message;
 		return notification;
 	}
 	
+	public void shopperSignUp(String username, String password) {
+		Shopper shopper = new Shopper();
+		shopper.setId(this.uniqueIdNumber);
+		shopper.setUsername(username);
+		shopper.setPassword(password);
+		shopper.shopperOrManager = "S";
+		this.uniqueIdNumber++;
+		accountList.add(shopper);
+	}
+	
+	public boolean accountSignIn(String accountUsername, String accountPassword) {
+		for (int i = 0; i < accountList.size(); i++) {
+			if (accountList.get(i).getUsername().equals(accountUsername) && accountList.get(i).getPassword().equals(accountPassword)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

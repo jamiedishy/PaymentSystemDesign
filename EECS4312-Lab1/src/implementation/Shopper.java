@@ -1,8 +1,11 @@
 package implementation;
 
+import java.util.ArrayList;
+
 public class Shopper extends Account {
 	Location location;
 	Order order;
+	boolean hasOrder = false;
 	
 	
 	public void setItemSize(Item item, Size size) {
@@ -14,13 +17,14 @@ public class Shopper extends Account {
 	}
 	
 	public void addToCart(Item item) {
-		if (this.order == null) { // create an order if no order associated with Shopper
+		if (this.order.associatedToShopperId == 0) { // create an order if no order associated with Shopper
 			Order order = systemInstance.createOrder();
 			order.addItemToOrder(item);
 			order.setSubTotal();
 			order.freeDelivery = true;
 			item.order = order;
-			this.order = order;
+			this.order.associatedToShopperId = this.getId();
+			hasOrder = true;
 			systemInstance.sendNotification("Added item to cart.");
 		}
 		else if (this.order.getItemQuantity() < 10) {
@@ -48,4 +52,29 @@ public class Shopper extends Account {
 		order.locationToDelivery = location;
 	}
 	
+	
+	public void deleteOrder(Order order) {
+		if (order.status != Status.SIGNEDFOR) { // order hasn't delivered yet
+			systemInstance.deleteOrder(order.ID);
+			order.associatedToShopperId = 0;
+		} 
+		else {
+			systemInstance.sendNotification("Cannot delete order. Order already delivered.");
+		}
+	}
+	
+	public ArrayList<Order> viewMyOrders() {
+		if (this.signedIn) {
+			return systemInstance.getShopperOrders(this.getId());
+		}
+		else {
+			ArrayList<Order> empty = new ArrayList<Order>();
+			return empty;
+		}
+	}
+	
+	public Notification shopperSignUp(String username, String password) { 
+		systemInstance.shopperSignUp(username, password);
+		return systemInstance.sendNotification("You've signed up!");
+	}
 }

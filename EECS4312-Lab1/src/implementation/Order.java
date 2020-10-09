@@ -2,6 +2,7 @@ package implementation;
 
 public class Order {
 	int ID;
+	int associatedToShopperId = 0;
 	private Item[] listOfItems = new Item[10];
 	private int itemQuantity = 0;
 	private int subTotal = 0;
