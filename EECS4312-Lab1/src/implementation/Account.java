@@ -6,8 +6,8 @@ public abstract class Account{
 	private int id;
 	private String password;
 	private String username;
-	String shopperOrManager;
-	boolean signedIn = false;
+	public String shopperOrManager;
+	public boolean signedIn = false;
 	SystemCoordination systemInstance = SystemCoordination.getInstance();
 	
 	public int getId() {
@@ -25,7 +25,7 @@ public abstract class Account{
 	
 	public void accountSignIn(String username, String password) {
 		if (systemInstance.accountSignIn(username, password) == true) {
-			signedIn = true;
+			this.signedIn = true;
 			systemInstance.sendNotification("Sign in successfull");
 		}
 		else {
@@ -44,7 +44,7 @@ public abstract class Account{
 	}
 	
 	public ArrayList<Food> searchFoodByMenu(String name) {
-		return systemInstance.foodList;
+		return systemInstance.getFoodList();
 	}
 	
 }

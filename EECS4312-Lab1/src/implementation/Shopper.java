@@ -4,9 +4,8 @@ import java.util.ArrayList;
 
 public class Shopper extends Account {
 	Location location;
-	Order order;
-	boolean hasOrder = false;
-	
+	public Order order;
+	public boolean hasOrder = false;
 	
 	public void setFoodSize(Food Food, Size size) {
 		Food.size = size;
@@ -17,8 +16,9 @@ public class Shopper extends Account {
 	}
 	
 	public void addToCart(FoodItem foodItem, Size size, int quantity) {
-		if (this.order.associatedToShopperId == 0) { // create an order if no order associated with Shopper
+		if (!hasOrder) { // create an order if no order associated with Shopper
 			Order order = systemInstance.createOrder();
+			this.order = order;
 			order.addFoodToOrder(foodItem);
 			order.setSubTotal();
 			order.freeDelivery = true;
@@ -29,7 +29,7 @@ public class Shopper extends Account {
 			hasOrder = true;
 			systemInstance.sendNotification("Added food item to cart.");
 		}
-		else if (this.order.getFoodQuantity() < 10) {
+		else if (hasOrder && this.order.getFoodQuantity() < 10) {
 			this.order.addFoodToOrder(foodItem);
 			this.order.setSubTotal();
 			foodItem.order = this.order;
@@ -58,7 +58,7 @@ public class Shopper extends Account {
 	
 	
 	public void deleteOrder(Order order) {
-		if (order.status != Status.SIGNEDFOR) { // order hasn't delivered yet
+		if (this.signedIn == true && order.status != Status.SIGNEDFOR) { // signed in and order hasn't delivered yet
 			systemInstance.deleteOrder(order.ID);
 			order.associatedToShopperId = 0;
 		} 
@@ -67,15 +67,15 @@ public class Shopper extends Account {
 		}
 	}
 	
-//	public ArrayList<Order> viewMyOrders() {
-//		if (this.signedIn) {
-//			return systemInstance.getShopperOrders(this.getId());
-//		}
-//		else {
-//			ArrayList<Order> empty = new ArrayList<Order>();
-//			return empty;
-//		}
-//	}
+	public ArrayList<Order> viewOrderHistory() {
+		if (this.signedIn) {
+			return systemInstance.getShopperOrders(this.getId());
+		}
+		else {
+			ArrayList<Order> empty = new ArrayList<Order>();
+			return empty;
+		}
+	}
 	
 	public Notification shopperSignUp(String username, String password) { 
 		systemInstance.shopperSignUp(username, password);

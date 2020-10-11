@@ -1,14 +1,14 @@
 package implementation;
 
 public abstract class Food {
-	int ID;
-	int price;
-	String ingredients, allergens, nutrition, name;
-	Size size = Size.MEDIUM;
-	Category category;
-	int dimensions;
-	int quantity = 1;
-	Order order;
+	public int ID;
+	public int price;
+	public String ingredients, allergens, nutrition, name;
+	public Size size = Size.MEDIUM;
+	public Category category;
+	public int dimensions;
+	public int quantity = 1;
+	public Order order;
 	
 	
 //	public static void main(String[] args) {

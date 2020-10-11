@@ -5,11 +5,21 @@ import java.util.ArrayList;
 public class SystemCoordination {
 	private static SystemCoordination sSoleInstance;
 	int uniqueIdNumber = 0;  
-	ArrayList<Account> accountList = new ArrayList<Account>();
-	ArrayList<Order> orderList = new ArrayList<Order>(); 
-	ArrayList<Food> foodList = new ArrayList<Food>();
+	private ArrayList<Account> accountList = new ArrayList<Account>();
+	private ArrayList<Order> orderList = new ArrayList<Order>(); 
+	private ArrayList<Food> foodList = new ArrayList<Food>();
 	
 	private SystemCoordination(){}  //private constructor... one instance of class
+	
+	public ArrayList<Account> getAccountList() {
+		return accountList;
+	}
+	public ArrayList<Order> getOrderList() {
+		return orderList;
+	}
+	public ArrayList<Food> getFoodList() {
+		return foodList;
+	}
 	
     public static SystemCoordination getInstance(){
         if (sSoleInstance == null){ //if there is no instance available... create new one

@@ -14,7 +14,7 @@ public class Manager extends Account {
 		return order.getSubTotal();
 	}
 	
-	public void addFood(String name, int price, String ingredients, String allergens, String nutrition, Category category) {
+	public Food addFood(String name, int price, String ingredients, String allergens, String nutrition, Category category) {
 		FoodItem foodItem = new FoodItem();
 		foodItem.name = name;
 		foodItem.price = price;
@@ -23,6 +23,7 @@ public class Manager extends Account {
 		foodItem.nutrition = nutrition;
 		foodItem.category = category;
 		systemInstance.addFood(foodItem);
+		return foodItem;
 	}
 	
 	public void deleteFood(FoodItem foodItem) {

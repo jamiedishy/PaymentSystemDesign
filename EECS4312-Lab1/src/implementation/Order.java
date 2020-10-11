@@ -2,8 +2,8 @@ package implementation;
 
 public class Order {
 	int ID;
-	int associatedToShopperId = 0;
-	private Food[] listOfFoods = new Food[10];
+	public int associatedToShopperId = 0;
+	private FoodItem[] listOfFoods = new FoodItem[10];
 	private int FoodQuantity = 0;
 	private int subTotal = 0;
 	Status status = Status.UNPAID;
@@ -44,15 +44,13 @@ public class Order {
 	}
 	
 	public int getFoodQuantity() {
-		return this.FoodQuantity;
-	}
-	public void calculateFoodQuantity() {
 		this.FoodQuantity = 0;
 		for(int i = 0; i < this.listOfFoods.length; i++) {
 		    if(this.listOfFoods[i] != null) {
 		    	this.FoodQuantity += this.listOfFoods[i].quantity;
 		    }
 		}
+		return this.FoodQuantity;
 	}
 	
 	public Status getStatus() {
