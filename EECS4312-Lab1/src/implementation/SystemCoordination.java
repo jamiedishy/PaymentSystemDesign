@@ -7,7 +7,7 @@ public class SystemCoordination {
 	int uniqueIdNumber = 0;  
 	ArrayList<Account> accountList = new ArrayList<Account>();
 	ArrayList<Order> orderList = new ArrayList<Order>(); 
-	ArrayList<Item> itemList = new ArrayList<Item>();
+	ArrayList<Food> foodList = new ArrayList<Food>();
 	
 	private SystemCoordination(){}  //private constructor... one instance of class
 	
@@ -18,22 +18,22 @@ public class SystemCoordination {
         return sSoleInstance;
     }
     
-    // add item
-    public void addItem(Item item) {
-    	item.ID = uniqueIdNumber;
+    // add Food
+    public void addFood(Food Food) {
+    	Food.ID = uniqueIdNumber;
     	uniqueIdNumber++;
-    	itemList.add(item);
-    	sendNotification("Item added");
+    	foodList.add(Food);
+    	sendNotification("Food added");
     }
     
-    // delete item
-    public void deleteItem(Item item) {
-    	for (int i = 0; i < itemList.size(); i++) {
-    		if (itemList.get(i).ID == item.ID) {
-    			itemList.remove(i);
+    // delete Food
+    public void deleteFood(Food Food) {
+    	for (int i = 0; i < foodList.size(); i++) {
+    		if (foodList.get(i).ID == Food.ID) {
+    			foodList.remove(i);
     		}
     	}
-    	sendNotification("Item deleted");
+    	sendNotification("Food deleted");
     }
     
     // create manager
@@ -112,5 +112,16 @@ public class SystemCoordination {
 			}
 		}
 		return false;
+	}
+	
+	public ArrayList<Food> getFoodItems(String foodName) {
+		ArrayList<Food> foodListOfName = new ArrayList<Food>(); 
+		
+		for (int i = 0; i < foodList.size(); i++) {
+			if (foodList.get(i).name == foodName) {
+				foodListOfName.add(foodList.get(i));
+			}
+		}
+		return foodListOfName;
 	}
 }

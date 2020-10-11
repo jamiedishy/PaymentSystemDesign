@@ -1,6 +1,6 @@
 package implementation;
 
-public class Item {
+public abstract class Food {
 	int ID;
 	int price;
 	String ingredients, allergens, nutrition, name;

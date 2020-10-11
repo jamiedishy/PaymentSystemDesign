@@ -6,68 +6,68 @@ public class Manager extends Account {
 		return order.status;
 	}
 	
-	public Item[] getOrderItems(Order order) {
-		return order.getOrderItems();
+	public Food[] getOrderFoods(Order order) {
+		return order.getOrderFoods();
 	}
 	
 	public int getOrderSubtotal(Order order) {
 		return order.getSubTotal();
 	}
 	
-	public void addItem(String name, int price, String ingredients, String allergens, String nutrition, Category category) {
-		Item foodItem = new Item();
+	public void addFood(String name, int price, String ingredients, String allergens, String nutrition, Category category) {
+		FoodItem foodItem = new FoodItem();
 		foodItem.name = name;
 		foodItem.price = price;
 		foodItem.ingredients = ingredients;
 		foodItem.allergens = allergens;
 		foodItem.nutrition = nutrition;
 		foodItem.category = category;
-		systemInstance.addItem(foodItem);
+		systemInstance.addFood(foodItem);
 	}
 	
-	public void deleteItem(Item item) {
-		systemInstance.deleteItem(item);
+	public void deleteFood(FoodItem foodItem) {
+		systemInstance.deleteFood(foodItem);
 	}
 
 	
-	public void updateItemPrice(Item item, int price) {
-		item.price = price;
-		systemInstance.sendNotification("Updated item price!");
+	public void updateFoodPrice(FoodItem foodItem, int price) {
+		foodItem.price = price;
+		systemInstance.sendNotification("Updated Food price!");
 	}
 	
-	public void updateItemIngredients(Item item, String ingredients) {
-		item.ingredients = ingredients;
-		systemInstance.sendNotification("Updated item ingredients!");
+	public void updateFoodIngredients(FoodItem foodItem, String ingredients) {
+		foodItem.ingredients = ingredients;
+		systemInstance.sendNotification("Updated Food ingredients!");
 	}
 	
-	public void updateItemAllergens(Item item, String allergens) {
-		item.allergens = allergens;
-		systemInstance.sendNotification("Updated item allergens!");
+	public void updateFoodAllergens(FoodItem foodItem, String allergens) {
+		foodItem.allergens = allergens;
+		systemInstance.sendNotification("Updated Food allergens!");
 	}
 	
-	public void updateItemNutrition(Item item, String nutrition) {
-		item.nutrition = nutrition;
-		systemInstance.sendNotification("Updated item nutrition!");
+	public void updateFoodNutrition(FoodItem foodItem, String nutrition) {
+		foodItem.nutrition = nutrition;
+		systemInstance.sendNotification("Updated Food nutrition!");
 	}
 	
-	public void updateItemName(Item item, String name) {
-		item.name = name;
-		systemInstance.sendNotification("Updated item name!");
+	public void updateFoodName(FoodItem foodItem, String name) {
+		foodItem.name = name;
+		systemInstance.sendNotification("Updated Food name!");
 	}
 	
-	public void updateItemSize(Item item, Size size) {
-		item.size = size;
-		systemInstance.sendNotification("Updated item size!");
+	public void updateFoodSize(FoodItem foodItem, Size size) {
+		foodItem.size = size;
+		systemInstance.sendNotification("Updated Food size!");
 	}
 	
-	public void updateItemCategory(Item item, Category category) {
-		item.category = category;
-		systemInstance.sendNotification("Updated item category!");
+	public void updateFoodCategory(FoodItem foodItem, Category category) {
+		foodItem.category = category;
+		systemInstance.sendNotification("Updated Food category!");
 	}
 	
-	public void updateItemDimensions(Item item, int dimensions) {
-		item.dimensions = dimensions;
-		systemInstance.sendNotification("Updated item dimensions!");
+	public void updateFoodDimensions(FoodItem foodItem, int dimensions) {
+		foodItem.dimensions = dimensions;
+		systemInstance.sendNotification("Updated Food dimensions!");
 	}
 	
 	

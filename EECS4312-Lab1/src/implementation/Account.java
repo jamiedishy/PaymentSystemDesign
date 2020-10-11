@@ -1,6 +1,8 @@
 package implementation;
 
-public abstract class Account {
+import java.util.ArrayList;
+
+public abstract class Account{
 	private int id;
 	private String password;
 	private String username;
@@ -21,8 +23,8 @@ public abstract class Account {
 		this.password = password;
 	}
 	
-	public void accountSignIn(int id, String password) {
-		if (systemInstance.accountSignIn(id, password) == true) {
+	public void accountSignIn(String username, String password) {
+		if (systemInstance.accountSignIn(username, password) == true) {
 			signedIn = true;
 			systemInstance.sendNotification("Sign in successfull");
 		}
@@ -36,4 +38,13 @@ public abstract class Account {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	
+	public ArrayList<Food> searchFoodByName(String name) {
+		return systemInstance.getFoodItems(name);
+	}
+	
+	public ArrayList<Food> searchFoodByMenu(String name) {
+		return systemInstance.foodList;
+	}
+	
 }

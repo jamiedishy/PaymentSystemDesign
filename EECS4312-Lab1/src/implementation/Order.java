@@ -3,8 +3,8 @@ package implementation;
 public class Order {
 	int ID;
 	int associatedToShopperId = 0;
-	private Item[] listOfItems = new Item[10];
-	private int itemQuantity = 0;
+	private Food[] listOfFoods = new Food[10];
+	private int FoodQuantity = 0;
 	private int subTotal = 0;
 	Status status = Status.UNPAID;
 	Location locationToDelivery;
@@ -13,9 +13,9 @@ public class Order {
 	
 	public int getSubTotal() {
 		this.subTotal = 0;
-		for(int i = 0; i < this.listOfItems.length; i++) {
-		    if(this.listOfItems[i] != null) {
-		    	this.subTotal += this.listOfItems[i].price;
+		for(int i = 0; i < this.listOfFoods.length; i++) {
+		    if(this.listOfFoods[i] != null) {
+		    	this.subTotal += this.listOfFoods[i].price;
 		    }
 		}
 		return this.subTotal;
@@ -23,9 +23,9 @@ public class Order {
 	
 	public void setSubTotal() {
 		this.subTotal = 0;
-		for(int i = 0; i < this.listOfItems.length; i++) {
-		    if(this.listOfItems[i] != null) {
-		    	this.subTotal += this.listOfItems[i].price;
+		for(int i = 0; i < this.listOfFoods.length; i++) {
+		    if(this.listOfFoods[i] != null) {
+		    	this.subTotal += this.listOfFoods[i].price;
 		    }
 		}
 	}
@@ -35,7 +35,7 @@ public class Order {
 	}
 
 	public void setFreeDelivery() {
-		if (itemQuantity > 0) {
+		if (FoodQuantity > 0) {
 			this.freeDelivery = true;
 		}
 		else {
@@ -43,14 +43,14 @@ public class Order {
 		}
 	}
 	
-	public int getItemQuantity() {
-		return this.itemQuantity;
+	public int getFoodQuantity() {
+		return this.FoodQuantity;
 	}
-	public void setItemQuantity() {
-		this.itemQuantity = 0;
-		for(int i = 0; i < this.listOfItems.length; i++) {
-		    if(this.listOfItems[i] != null) {
-		    	this.itemQuantity += this.listOfItems[i].quantity;
+	public void calculateFoodQuantity() {
+		this.FoodQuantity = 0;
+		for(int i = 0; i < this.listOfFoods.length; i++) {
+		    if(this.listOfFoods[i] != null) {
+		    	this.FoodQuantity += this.listOfFoods[i].quantity;
 		    }
 		}
 	}
@@ -62,13 +62,13 @@ public class Order {
 		this.status = newStatus;
 	}
 	
-	public Item[] getOrderItems() {
-		return this.listOfItems;
+	public Food[] getOrderFoods() {
+		return this.listOfFoods;
 	}
-	public void addItemToOrder(Item item) {
-		for(int i = 0; i < this.listOfItems.length; i++) {
-		    if(this.listOfItems[i] == null) {
-		    	this.listOfItems[i] = item;
+	public void addFoodToOrder(FoodItem foodItem) {
+		for(int i = 0; i < this.listOfFoods.length; i++) {
+		    if(this.listOfFoods[i] == null) {
+		    	this.listOfFoods[i] = foodItem;
 		        break;
 		    }
 		}

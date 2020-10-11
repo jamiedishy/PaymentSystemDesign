@@ -8,33 +8,37 @@ public class Shopper extends Account {
 	boolean hasOrder = false;
 	
 	
-	public void setItemSize(Item item, Size size) {
-		item.size = size;
+	public void setFoodSize(Food Food, Size size) {
+		Food.size = size;
 	}
 	
-	public void setItemQuantity(Item item, int quantity) {
-		item.quantity = quantity;
+	public void setFoodQuantity(Food Food, int quantity) {
+		Food.quantity = quantity;
 	}
 	
-	public void addToCart(Item item) {
+	public void addToCart(FoodItem foodItem, Size size, int quantity) {
 		if (this.order.associatedToShopperId == 0) { // create an order if no order associated with Shopper
 			Order order = systemInstance.createOrder();
-			order.addItemToOrder(item);
+			order.addFoodToOrder(foodItem);
 			order.setSubTotal();
 			order.freeDelivery = true;
-			item.order = order;
+			foodItem.order = order;
+			foodItem.size = size;
+			foodItem.quantity = quantity;
 			this.order.associatedToShopperId = this.getId();
 			hasOrder = true;
-			systemInstance.sendNotification("Added item to cart.");
+			systemInstance.sendNotification("Added food item to cart.");
 		}
-		else if (this.order.getItemQuantity() < 10) {
-			this.order.addItemToOrder(item);
+		else if (this.order.getFoodQuantity() < 10) {
+			this.order.addFoodToOrder(foodItem);
 			this.order.setSubTotal();
-			item.order = this.order;
-			systemInstance.sendNotification("Added item to cart with " + this.order.getItemQuantity() + " items.");
+			foodItem.order = this.order;
+			foodItem.size = size;
+			foodItem.quantity = quantity;
+			systemInstance.sendNotification("Added food item to cart with " + this.order.getFoodQuantity() + " Foods.");
 		}
 		else {
-			systemInstance.sendNotification("Cannot add to cart. Maximum items in order.");
+			systemInstance.sendNotification("Cannot add to cart. Maximum food items in order.");
 		}
 	}
 	
@@ -63,15 +67,15 @@ public class Shopper extends Account {
 		}
 	}
 	
-	public ArrayList<Order> viewMyOrders() {
-		if (this.signedIn) {
-			return systemInstance.getShopperOrders(this.getId());
-		}
-		else {
-			ArrayList<Order> empty = new ArrayList<Order>();
-			return empty;
-		}
-	}
+//	public ArrayList<Order> viewMyOrders() {
+//		if (this.signedIn) {
+//			return systemInstance.getShopperOrders(this.getId());
+//		}
+//		else {
+//			ArrayList<Order> empty = new ArrayList<Order>();
+//			return empty;
+//		}
+//	}
 	
 	public Notification shopperSignUp(String username, String password) { 
 		systemInstance.shopperSignUp(username, password);
