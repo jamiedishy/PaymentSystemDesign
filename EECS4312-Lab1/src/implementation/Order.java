@@ -15,7 +15,7 @@ public class Order {
 		this.subTotal = 0;
 		for(int i = 0; i < this.listOfFoods.length; i++) {
 		    if(this.listOfFoods[i] != null) {
-		    	this.subTotal += this.listOfFoods[i].price;
+		    	this.subTotal += this.listOfFoods[i].price * this.listOfFoods[i].quantity;
 		    }
 		}
 		return this.subTotal;

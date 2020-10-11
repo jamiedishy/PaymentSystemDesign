@@ -18,12 +18,12 @@ public class Shopper extends Account {
 //      System.out.println("Instance 2 hash:" + instance2.hashCode());  
 // }
 	
-	public void setFoodSize(Food Food, Size size) {
-		Food.size = size;
+	public void setFoodSize(FoodItem food, Size size) {
+		food.size = size;
 	}
 	
-	public void setFoodQuantity(Food Food, int quantity) {
-		Food.quantity = quantity;
+	public void setFoodQuantity(FoodItem food, int quantity) {
+		food.quantity = quantity;
 	}
 	
 	// don't have to be signed in to add to cart

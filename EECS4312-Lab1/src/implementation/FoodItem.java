@@ -1,5 +1,5 @@
 package implementation;
 
 public class FoodItem extends Food{
-	int quantity = 0;
+	public int quantity = 0;
 }
