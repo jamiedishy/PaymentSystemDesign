@@ -9,9 +9,9 @@ import implementation.PhoneNumber;
 import implementation.Shopper;
 import implementation.Size;
 import implementation.Status;
-import implementation.SystemCoordination;
 
-class ProceedToCheckoutTest {
+class ShopperCheckOrderStatus {
+
 	@Test
 	void test() {
 		Shopper shopper = new Shopper();
@@ -19,6 +19,7 @@ class ProceedToCheckoutTest {
 		shopper.shopperSignUp("shopper1", "password", phoneNumber);
 		shopper.accountSignIn("shopper1", "password");
 		assertEquals(true, shopper.signedIn);
+		assertEquals(phoneNumber, shopper.phoneNumber);
 		shopper.setId(123);
 		
 		FoodItem foodItem1 = new FoodItem();
@@ -27,12 +28,18 @@ class ProceedToCheckoutTest {
 		shopper.addToCart(foodItem2, Size.SMALL, 7);
 		assertEquals(true, shopper.hasOrder);
 		
-		// shopper clicks proceed to checkout
-		shopper.setDeliveryLocation(shopper.currentOrder, "postalcode", "city", "canada", 55);
-		assertEquals("postalcode", shopper.currentOrder.locationToDelivery.getPoscalCode());
-		// shopper submits payment to third party
-		shopper.confirmOrder();
-		assertEquals(Status.PAID, shopper.currentOrder.getStatus());
+		// shopper signed in and checking order
+		assertEquals(Status.UNPAID, shopper.checkOrderStatus(shopper.currentOrder.getID(), shopper.phoneNumber, shopper));
+		
+		shopper.signOut();
+		FoodItem foodItem3 = new FoodItem();
+		shopper.addToCart(foodItem3, Size.SMALL, 2);
+		assertEquals(true, shopper.hasOrder);
+		
+		// shopper not signed in and checking order
+		assertEquals(Status.UNKNOWN, shopper.checkOrderStatus(shopper.currentOrder.getID(), shopper.phoneNumber, shopper));
+		
+		
 	}
 
 }

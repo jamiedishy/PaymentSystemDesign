@@ -71,5 +71,8 @@ public class Manager extends Account {
 		systemInstance.sendNotification("Updated Food dimensions!");
 	}
 	
+	public void signOut() {
+		this.signedIn = false;
+	}
 	
 }

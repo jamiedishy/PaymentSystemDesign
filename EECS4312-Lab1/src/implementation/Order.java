@@ -1,7 +1,7 @@
 package implementation;
 
 public class Order {
-	int ID;
+	private int ID;
 	public int associatedToShopperId = 0;
 	private FoodItem[] listOfFoods = new FoodItem[10];
 	private int FoodQuantity = 0;
@@ -30,8 +30,10 @@ public class Order {
 		}
 	}
 	
-	public void paySubTotal(int payment) {
+	public void paySubTotal(int payment, Shopper shopper) {
+		this.clientPhoneNumber = shopper.phoneNumber;
 		this.subTotal -= payment;
+		this.setStatus(Status.PAID);
 	}
 
 	public void setFreeDelivery() {
@@ -70,5 +72,13 @@ public class Order {
 		        break;
 		    }
 		}
+	}
+
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int iD) {
+		ID = iD;
 	}
 }

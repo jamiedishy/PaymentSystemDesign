@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import implementation.FoodItem;
+import implementation.PhoneNumber;
 import implementation.Shopper;
 import implementation.Size;
 import implementation.Status;
@@ -17,7 +18,8 @@ class UpdateOrderStatusTest {
 		SystemCoordination systemInstance = SystemCoordination.getInstance();
 		
 		Shopper shopper = new Shopper();
-		shopper.shopperSignUp("shopper1", "password");
+		PhoneNumber pN = new PhoneNumber();
+		shopper.shopperSignUp("shopper1", "password", pN);
 		shopper.accountSignIn("shopper1", "password");
 		assertEquals(true, shopper.signedIn);
 		shopper.setId(123);
@@ -31,20 +33,20 @@ class UpdateOrderStatusTest {
 		// shopper pays to external payment system
 		// system receives prompt from external payment system
 		
-		systemInstance.updateOrderStatus(shopper.order, Status.PAID);
-		assertEquals(Status.PAID, shopper.order.getStatus());
+		systemInstance.updateOrderStatus(shopper.currentOrder, Status.PAID);
+		assertEquals(Status.PAID, shopper.currentOrder.getStatus());
 		
 		// order is shipping
 		// system receives prompt from shipping
 		
-		systemInstance.updateOrderStatus(shopper.order, Status.DELIVERING);
-		assertEquals(Status.DELIVERING, shopper.order.getStatus());
+		systemInstance.updateOrderStatus(shopper.currentOrder, Status.DELIVERING);
+		assertEquals(Status.DELIVERING, shopper.currentOrder.getStatus());
 		
 		// order delivered and signed
 		// system receives prompt
 				
-		systemInstance.updateOrderStatus(shopper.order, Status.PAID);
-		assertEquals(Status.PAID, shopper.order.getStatus());
+		systemInstance.updateOrderStatus(shopper.currentOrder, Status.PAID);
+		assertEquals(Status.PAID, shopper.currentOrder.getStatus());
 				
 	}
 

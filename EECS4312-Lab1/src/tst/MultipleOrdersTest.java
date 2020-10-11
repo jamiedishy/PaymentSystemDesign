@@ -9,9 +9,9 @@ import implementation.PhoneNumber;
 import implementation.Shopper;
 import implementation.Size;
 import implementation.Status;
-import implementation.SystemCoordination;
 
-class ProceedToCheckoutTest {
+class MultipleOrdersTest {
+
 	@Test
 	void test() {
 		Shopper shopper = new Shopper();
@@ -33,6 +33,19 @@ class ProceedToCheckoutTest {
 		// shopper submits payment to third party
 		shopper.confirmOrder();
 		assertEquals(Status.PAID, shopper.currentOrder.getStatus());
+		
+		shopper.signOut();
+		assertEquals(false, shopper.hasOrder);
+		
+		FoodItem foodItem3 = new FoodItem();
+		shopper.addToCart(foodItem3, Size.SMALL, 7);
+		assertEquals(true, shopper.hasOrder);
+
+		shopper.accountSignIn("shopper1", "password");
+		assertEquals(true, shopper.signedIn);
+		
+		assertEquals(2, shopper.viewOrderHistory().size()); // there are 2 orders associated with this customer
+		
 	}
 
 }

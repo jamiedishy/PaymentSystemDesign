@@ -17,7 +17,7 @@ class AddToCartTest {
 		FoodItem foodItem = new FoodItem();
 		shopper.addToCart(foodItem, Size.LARGE, 3);
 		assertEquals(true, shopper.hasOrder);
-		assertEquals(123, shopper.order.associatedToShopperId);
+		assertEquals(123, shopper.currentOrder.associatedToShopperId);
 	}
 
 }

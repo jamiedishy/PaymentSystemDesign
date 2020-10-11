@@ -60,7 +60,7 @@ public class SystemCoordination {
 	
 	public Order createOrder() {
 		Order order = new Order();
-		order.ID = uniqueIdNumber;
+		order.setID(uniqueIdNumber);
 		uniqueIdNumber++;
 		orderList.add(order);
 		return order;
@@ -68,7 +68,7 @@ public class SystemCoordination {
 	
     public void deleteOrder(int orderID) {
     	for (int i = 0; i < orderList.size(); i++) {
-    		if (orderList.get(i).ID == orderID) {
+    		if (orderList.get(i).getID() == orderID) {
     			orderList.remove(i);
     		}
     	}
@@ -105,9 +105,11 @@ public class SystemCoordination {
 		return notification;
 	}
 	
-	public void shopperSignUp(String username, String password) {
-		Shopper shopper = new Shopper();
+	public void shopperSignUp(Shopper shopper, String username, String password, PhoneNumber phoneNumber) {
+//		Shopper shopper = new Shopper();
 		shopper.setId(this.uniqueIdNumber);
+		shopper.phoneNumber = phoneNumber;
+//		System.out.println("this is" + shopper.getId());
 		shopper.setUsername(username);
 		shopper.setPassword(password);
 		shopper.shopperOrManager = "S";

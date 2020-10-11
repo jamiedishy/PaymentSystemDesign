@@ -4,5 +4,6 @@ public enum Status {
 	UNPAID,
 	PAID,
 	DELIVERING,
-	SIGNEDFOR
+	SIGNEDFOR,
+	UNKNOWN
 }

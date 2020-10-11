@@ -3,8 +3,20 @@ package implementation;
 import java.util.ArrayList;
 
 public class Shopper extends Account {
-	public Order order;
+	public Order currentOrder;
 	public boolean hasOrder = false;
+	public PhoneNumber phoneNumber;
+//	public static void main(String[] args) {
+//      //Instance 1
+//		SystemCoordination instance1 = SystemCoordination.getInstance();
+//
+//      //Instance 2
+//		SystemCoordination instance2 = SystemCoordination.getInstance();
+//
+//      //now lets check the hash key.
+//      System.out.println("Instance 1 hash:" + instance1.hashCode());
+//      System.out.println("Instance 2 hash:" + instance2.hashCode());  
+// }
 	
 	public void setFoodSize(Food Food, Size size) {
 		Food.size = size;
@@ -14,27 +26,37 @@ public class Shopper extends Account {
 		Food.quantity = quantity;
 	}
 	
+	// don't have to be signed in to add to cart
 	public void addToCart(FoodItem foodItem, Size size, int quantity) {
-		if (!hasOrder) { // create an order if no order associated with Shopper
+		if (!hasOrder && foodItem.quantity < 10) { // create an order if no order associated with Shopper
 			Order order = systemInstance.createOrder();
-			this.order = order;
+//			order.clientPhoneNumber = phoneNumber;
 			order.addFoodToOrder(foodItem);
 			order.setSubTotal();
-			order.freeDelivery = true;
+			if (order.getFoodQuantity() > 1 && order.getFoodQuantity() < 10) {
+				order.freeDelivery = true;
+			}
 			foodItem.order = order;
 			foodItem.size = size;
 			foodItem.quantity = quantity;
-			this.order.associatedToShopperId = this.getId();
+			order.associatedToShopperId = this.getId();
 			hasOrder = true;
+			if (this.signedIn) {
+				order.clientPhoneNumber = this.phoneNumber;
+			}
+			this.currentOrder = order;
 			systemInstance.sendNotification("Added food item to cart.");
 		}
-		else if (hasOrder && this.order.getFoodQuantity() < 10) {
-			this.order.addFoodToOrder(foodItem);
-			this.order.setSubTotal();
-			foodItem.order = this.order;
+		else if (hasOrder && this.currentOrder.getFoodQuantity() < 10) {
+			this.currentOrder.addFoodToOrder(foodItem);
+			this.currentOrder.setSubTotal();
+			foodItem.order = this.currentOrder;
 			foodItem.size = size;
 			foodItem.quantity = quantity;
-			systemInstance.sendNotification("Added food item to cart with " + this.order.getFoodQuantity() + " Foods.");
+			if (this.signedIn) {
+				this.currentOrder.clientPhoneNumber = this.phoneNumber;
+			}
+			systemInstance.sendNotification("Added food item to cart with " + this.currentOrder.getFoodQuantity() + " Foods.");
 		}
 		else {
 			systemInstance.sendNotification("Cannot add to cart. Maximum food items in order.");
@@ -42,9 +64,13 @@ public class Shopper extends Account {
 	}
 	
 	public void payOrder(Order order, int payment) { // assuming full amount is paid
-		order.paySubTotal(payment); // assume order.subTotal = 0 now
-		order.setStatus(Status.PAID);
-		systemInstance.sendNotification("Payment complete");
+		if (this.signedIn) {
+			order.paySubTotal(payment, this); // assume order.subTotal = 0 now
+			systemInstance.sendNotification("Payment complete");
+		}
+		else {
+			systemInstance.sendNotification("Must sign in to pay.");
+		}
 	}
 	
 	public void setDeliveryLocation(Order order, String postalCode, String city, String country, int addressNumber) {
@@ -56,10 +82,39 @@ public class Shopper extends Account {
 		order.locationToDelivery = location;
 	}
 	
+	public Status checkOrderStatus(int orderNumber, PhoneNumber phoneNumber, Shopper shopper) {
+		if (shopper.signedIn) {
+			ArrayList<Order> orderHistory = this.viewOrderHistory();
+			for (int i = 0; i < orderHistory.size(); i++) {
+				if (orderHistory.get(i).getID() == orderNumber && orderHistory.get(i).clientPhoneNumber == phoneNumber) {
+					return orderHistory.get(i).status;
+				}
+			}
+			return Status.UNKNOWN;
+		}
+		return Status.UNKNOWN;
+	}
 	
-	public boolean deleteOrder(Order order) {
+	public Order getOrderGivenOrderNumber(int orderNumber) {
+	
+		for (int i = 0; i < this.viewOrderHistory().size(); i++) {
+			if (this.viewOrderHistory().get(i).getID() == orderNumber) {
+				return this.viewOrderHistory().get(i);
+			}
+		}
+		return null;
+	}
+	
+	
+	public boolean deleteOrder(int orderNumber, PhoneNumber phoneNumber) {
+		Order order = this.getOrderGivenOrderNumber(orderNumber);
+		if (orderNumber == this.currentOrder.getID()) {
+			this.currentOrder = order; // reinitialized
+			this.hasOrder = false;
+		}
+		
 		if (this.signedIn == true && order.status != Status.SIGNEDFOR) { // signed in and order hasn't delivered yet
-			systemInstance.deleteOrder(order.ID);
+			systemInstance.deleteOrder(order.getID());
 			order.associatedToShopperId = 0;
 			return true;
 		} 
@@ -79,12 +134,19 @@ public class Shopper extends Account {
 		}
 	}
 	
-	public Notification shopperSignUp(String username, String password) { 
-		systemInstance.shopperSignUp(username, password);
+	public Notification shopperSignUp(String username, String password, PhoneNumber phoneNumber) { 
+		systemInstance.shopperSignUp(this, username, password, phoneNumber);
 		return systemInstance.sendNotification("You've signed up!");
 	}
 	
 	public void confirmOrder() {
-		systemInstance.updateOrderStatus(this.order, Status.PAID);
+		systemInstance.updateOrderStatus(this.currentOrder, Status.PAID);
+	}
+	
+	public void signOut() {
+		Order order = new Order();
+		this.currentOrder = order; // reinitialize current order
+		this.signedIn = false;
+		this.hasOrder = false;
 	}
 }
