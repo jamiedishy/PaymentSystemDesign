@@ -3,7 +3,6 @@ package implementation;
 import java.util.ArrayList;
 
 public class Shopper extends Account {
-	Location location;
 	public Order order;
 	public boolean hasOrder = false;
 	
@@ -49,7 +48,8 @@ public class Shopper extends Account {
 	}
 	
 	public void setDeliveryLocation(Order order, String postalCode, String city, String country, int addressNumber) {
-		location.setPoscalCode(postalCode);
+		Location location = new Location();
+		location.setPostalCode(postalCode);
 		location.setAddressNumber(addressNumber);
 		location.setCountry(country);
 		location.setCity(city);
@@ -57,13 +57,15 @@ public class Shopper extends Account {
 	}
 	
 	
-	public void deleteOrder(Order order) {
+	public boolean deleteOrder(Order order) {
 		if (this.signedIn == true && order.status != Status.SIGNEDFOR) { // signed in and order hasn't delivered yet
 			systemInstance.deleteOrder(order.ID);
 			order.associatedToShopperId = 0;
+			return true;
 		} 
 		else {
 			systemInstance.sendNotification("Cannot delete order. Order already delivered.");
+			return false;
 		}
 	}
 	
@@ -80,5 +82,9 @@ public class Shopper extends Account {
 	public Notification shopperSignUp(String username, String password) { 
 		systemInstance.shopperSignUp(username, password);
 		return systemInstance.sendNotification("You've signed up!");
+	}
+	
+	public void confirmOrder() {
+		systemInstance.updateOrderStatus(this.order, Status.PAID);
 	}
 }

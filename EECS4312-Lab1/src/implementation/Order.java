@@ -7,7 +7,7 @@ public class Order {
 	private int FoodQuantity = 0;
 	private int subTotal = 0;
 	Status status = Status.UNPAID;
-	Location locationToDelivery;
+	public Location locationToDelivery;
 	PhoneNumber clientPhoneNumber;
 	boolean freeDelivery = false;
 	

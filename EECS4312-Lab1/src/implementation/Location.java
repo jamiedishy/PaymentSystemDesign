@@ -26,7 +26,7 @@ public class Location {
 	public String getPoscalCode() {
 		return postalCode;
 	}
-	public void setPoscalCode(String postalCode) {
+	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
 	}
 }

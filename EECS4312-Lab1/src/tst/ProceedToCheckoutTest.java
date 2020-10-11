@@ -2,17 +2,15 @@ package tst;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
 
 import implementation.FoodItem;
-import implementation.Order;
 import implementation.Shopper;
 import implementation.Size;
+import implementation.Status;
+import implementation.SystemCoordination;
 
-class OrderHistoryTest {
-
+class ProceedToCheckoutTest {
 	@Test
 	void test() {
 		Shopper shopper = new Shopper();
@@ -27,14 +25,12 @@ class OrderHistoryTest {
 		shopper.addToCart(foodItem2, Size.SMALL, 7);
 		assertEquals(true, shopper.hasOrder);
 		
-		
-		ArrayList<Order> orderHistory = new ArrayList<Order>();
-		orderHistory.add(shopper.order);
-		assertEquals(orderHistory, shopper.viewOrderHistory());
-		assertEquals(1, shopper.viewOrderHistory().size());
-		assertEquals(9, shopper.viewOrderHistory().get(0).getFoodQuantity());
+		// shopper clicks proceed to checkout
+		shopper.setDeliveryLocation(shopper.order, "postalcode", "city", "canada", 55);
+		assertEquals("postalcode", shopper.order.locationToDelivery.getPoscalCode());
+		// shopper submits payment to third party
+		shopper.confirmOrder();
+		assertEquals(Status.PAID, shopper.order.getStatus());
 	}
 
 }
-
-

@@ -10,6 +10,7 @@ import implementation.FoodItem;
 import implementation.Order;
 import implementation.Shopper;
 import implementation.Size;
+import implementation.Status;
 import implementation.SystemCoordination;
 
 class DeleteOrderTest {
@@ -31,8 +32,15 @@ class DeleteOrderTest {
 		assertEquals(1, orderHistory.size());
 		
 		shopper.deleteOrder(shopper.order);
-		
 		assertEquals(0, systemInstance.getShopperOrders(123).size());
+		
+		shopper.addToCart(foodItem, Size.MEDIUM, 9);
+		// order delivers
+		systemInstance.updateOrderStatus(shopper.order, Status.SIGNEDFOR);
+		// shopper fails to delete order
+		assertEquals(false, shopper.deleteOrder(shopper.order));
+		
+		
 	}
 
 }
